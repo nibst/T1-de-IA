@@ -1,0 +1,5 @@
+bug com o estados:
+	"12_345678" (espaço na 3ª casa) (deveria retornar 2, mas retorna 3 possibilidades) (direira extra)
+	"123_45678" (espaço na 4ª casa) (deveria retornar 3, mas retorna 4 possibilidades) (esquerda extra)
+	"12345_678" (espaço na 6ª casa) (deveria retornar 3, mas retorna 4 possibilidades) (direira extra)
+	"123456_78" (espaço na 7ª casa) (deveria retornar 2, mas retorna 3 possibilidades) (esquerda extra)

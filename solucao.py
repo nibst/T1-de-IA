@@ -15,7 +15,6 @@ class Nodo:
         self.acao = acao
         self.custo = custo
 
-
 def sucessor(estado):
     """
     Recebe um estado (string) e retorna uma lista de tuplas (ação,estado atingido)
@@ -25,57 +24,37 @@ def sucessor(estado):
     :return:
     """
     transicoes = []
-    possiveis_movimentos = ['acima','abaixo','esquerda','direita']
-    for movimento in possiveis_movimentos:
-        transicao = mover_vazio(movimento,estado)
-        if transicao: #se nao for Nonne
-            transicoes.append(transicao)
+    j = 0
+    for i in estado:
+        if i == "_":
+            casa = j
+            break
+        j = j + 1
+    if casa < 6: #move para baixo
+        estado_novo = list(estado)
+        estado_novo[casa+3], estado_novo[casa] = estado_novo[casa], estado_novo[casa+3]
+        estado_novo = ''.join(estado_novo)
+        tupla = ("abaixo", estado_novo)
+        transicoes.append(tupla)
+    if (casa > 2): #move para cima
+        estado_novo = list(estado)
+        estado_novo[casa-3], estado_novo[casa] = estado_novo[casa], estado_novo[casa-3]
+        estado_novo = ''.join(estado_novo)
+        tupla = ("acima", estado_novo)
+        transicoes.append(tupla)
+    if (casa % 3 == 0) or (casa % 3 == 1): #move para direita
+        estado_novo = list(estado)
+        estado_novo[casa+1], estado_novo[casa] = estado_novo[casa], estado_novo[casa+1]
+        estado_novo = ''.join(estado_novo)
+        tupla = ("direita", estado_novo)
+        transicoes.append(tupla)
+    if (casa % 3 == 2) or (casa % 3 == 1): #move para esquerda
+        estado_novo = list(estado)
+        estado_novo[casa-1], estado_novo[casa] = estado_novo[casa], estado_novo[casa-1]
+        estado_novo = ''.join(estado_novo)
+        tupla = ("esquerda", estado_novo)
+        transicoes.append(tupla)
     return transicoes
-    
-    
-    
-            
-
-def mover_vazio(movimento,estado):
-    """
-    Move o espaço vazio com o movimento especificado no parametro movimento
-
-    Parameters
-    ----------
-    `movimento`: str 
-        especifica o movimento a ser feito
-    `estado` : str 
-        estado que será aplicado o movimento
-
-    Returns
-    -------
-     : None
-        caso seja inválido o movimento
-     : Tuple
-        tupla (movimento,novo_estado) caso seja movimento válido
-    """    
-    offset_dict= {}
-    offset_dict['acima'] = -3
-    offset_dict['abaixo'] = 3
-    offset_dict['esquerda'] = -1
-    offset_dict['direita'] = 1
-    
-
-    novo_estado = list(estado)
-    limite_sup = 8
-    limite_inf = 0
-    peca_vazia = '_'
-    offset = offset_dict[movimento]
-    for count,peca in enumerate(estado):
-        if peca == peca_vazia:
-            if count + offset > limite_sup or count + offset < limite_inf:
-                return None
-            else:
-                troca = estado[count+offset]
-                novo_estado[count] = troca
-                novo_estado[count+offset] = peca_vazia 
-                novo_estado = ''.join(novo_estado) #transforam em string para retornar
-                return (movimento,novo_estado)
 
 
 def expande(nodo):
@@ -139,3 +118,7 @@ def astar_manhattan(estado):
     """
     # substituir a linha abaixo pelo seu codigo
     raise NotImplementedError
+
+
+s1 = "123_45678"
+print(sucessor(s1))
