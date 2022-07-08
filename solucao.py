@@ -15,6 +15,7 @@ class Nodo:
         self.acao = acao
         self.custo = custo
 
+
 def sucessor(estado):
     """
     Recebe um estado (string) e retorna uma lista de tuplas (ação,estado atingido)
@@ -64,8 +65,10 @@ def expande(nodo):
     :param nodo: objeto da classe Nodo
     :return:
     """
-    # substituir a linha abaixo pelo seu codigo
-    raise NotImplementedError
+    nodos = []
+    for s in sucessor(nodo.estado):
+        nodos.append(Nodo(s[1], nodo, s[0], nodo.custo + 1))
+    return nodos
 
 
 def bfs(estado):
@@ -119,6 +122,3 @@ def astar_manhattan(estado):
     # substituir a linha abaixo pelo seu codigo
     raise NotImplementedError
 
-
-s1 = "123_45678"
-print(sucessor(s1))
