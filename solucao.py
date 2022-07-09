@@ -1,3 +1,4 @@
+from  heapqModified import heappop,heappush
 class Nodo:
     """
     Implemente a classe Nodo com os atributos descritos na funcao init
@@ -14,7 +15,7 @@ class Nodo:
         self.pai = pai
         self.acao = acao
         self.custo = custo
-
+        
 
 def sucessor(estado):
     """
@@ -119,6 +120,99 @@ def astar_manhattan(estado):
     :param estado: str
     :return:
     """
-    # substituir a linha abaixo pelo seu codigo
-    raise NotImplementedError
+    objetivo = '12345678_'
+    
+    raiz = Nodo(estado,None,None,0)
+    
+    X = []
+    F = []
+    custo_biased = soma_manhattan(raiz.estado) + raiz.custo
+    lista_estados = []
+    heappush(F,(custo_biased,raiz))
+    sucessores = expande(raiz)
+    count = 0
+    while F:        
+        explorado=heappop(F)
+        
+        if explorado[1].estado not in lista_estados:
+            lista_estados.append(explorado[1].estado)
+            X.append(explorado)
+            if explorado[1].estado == objetivo:
+                nodo = explorado[1]
+                caminho_inverso =[]
+                while nodo.pai != None:
+                    caminho_inverso.append(nodo)
+                    nodo = nodo.pai
+                caminho_certo = []
+                for i in range (len(caminho_inverso)):
+                    caminho_certo.append(caminho_inverso.pop())
+                return caminho_certo
+            sucessores = expande(explorado[1])
+            for sucessor in sucessores:
+                custo_biased  = soma_manhattan(sucessor.estado) + sucessor.custo
+                heappush(F,(custo_biased,sucessor))
+    return None
+        
+    """
+    busca_grafo(s):
+
+    X ← {}
+
+    F ← {new Node(s)} 
+
+    loop:
+
+    se F = ∅: FALHA
+
+    v ← retira(F)
+
+    se v é o objetivo: retornar caminho s-v
+
+    se v ∉ X:
+
+        Insere v em X 
+
+        Cria Node pra cada vizinho de v e insere em F
+    """
+    
+
+def soma_manhattan(estado):
+    matriz_estado = []
+    soma_manhattan = 0
+    #transformar em matriz
+    linha = []
+    for nmr_casa,peca in enumerate(estado):
+        linha.append(peca)
+        if (nmr_casa + 1) % 3 == 0:
+            matriz_estado.append(linha)
+            linha = []
+    #1 fica na matriz[0][0]
+    #2 fica na matriz[0][1]
+    #3 fica na matriz[0][2]
+    for i in range(3):
+        for j in range(3):
+            if matriz_estado[i][j] != '_':
+                pos = calcula_posicao_objetivo(matriz_estado[i][j])
+                soma_manhattan+= abs(pos[0] - i) + abs(pos[1] - j)
+    return soma_manhattan
+
+def calcula_posicao_objetivo(peca):
+    """
+    Returns
+    -------
+     : Tuple
+        tupla com os index i e j que ele deveria ter na posicao objetivo
+    """
+    numero_peca = int(peca)
+    if numero_peca <= 3:
+        return (0,numero_peca-1)
+    if numero_peca <=6:
+        j  = numero_peca % 4
+        return(1,j)
+    if numero_peca <=9:
+        j  = numero_peca % 7
+        return(2,j)
+
+
+
 
