@@ -1,5 +1,5 @@
 GUSTAVO AUAD PICCOLI - 00275858
-JÚLIA DEL PINO RITTMANN - 
+JÚLIA DEL PINO RITTMANN - 00262512
 NÍKOLAS PADÃO SCHUSTER - 00323741
 
 O grupo não utilizou bibliotecas do python que necessitem ser instaladas. 
