@@ -1,6 +1,8 @@
-from  heapqModified import heappop,heappush
 import time
+from  heapqModified import heappop,heappush
 from Tree import Tree
+
+
 class Nodo:
     """
     Implemente a classe Nodo com os atributos descritos na funcao init
@@ -17,7 +19,7 @@ class Nodo:
         self.pai = pai
         self.acao = acao
         self.custo = custo
-        
+
 
 def sucessor(estado):
     """
@@ -88,7 +90,9 @@ def bfs(estado):
     visitados = Tree()
     fronteira = []
     fronteira.append(raiz)
+    expandido = 0
     while (fronteira != []):
+        expandido += 1
         explorado = fronteira.pop(0)
         if visitados.insere(explorado.estado):
             if explorado.estado == objetivo: #Certo
@@ -100,9 +104,11 @@ def bfs(estado):
                 caminho_certo = []
                 for i in range (len(caminho_inverso)):
                     caminho_certo.append(caminho_inverso.pop())
+                print(expandido)
                 return caminho_certo
             for sucessor in expande(explorado):
                 fronteira.append(sucessor)
+    print(expandido)
     return None
 
 
@@ -120,7 +126,9 @@ def dfs(estado):
     visitados = Tree()
     fronteira = []
     fronteira.append(raiz)
+    expandido = 0
     while (fronteira != []):
+        expandido += 1
         explorado = fronteira.pop()
         if visitados.insere(explorado.estado):
             if explorado.estado == objetivo:
@@ -132,9 +140,11 @@ def dfs(estado):
                 caminho_certo = []
                 for i in range (len(caminho_inverso)):
                     caminho_certo.append(caminho_inverso.pop())
+                print(expandido)
                 return caminho_certo
             for sucessor in expande(explorado):
                 fronteira.append(sucessor)
+    print(expandido)
     return None
 
 
@@ -170,7 +180,9 @@ def astar_manhattan(estado):
     heappush(F,(custo_biased,raiz))
     sucessores = expande(raiz)
     estados_explorados = Tree()
+    expandido = 0
     while F:        
+        expandido += 1
         explorado=heappop(F)
         if estados_explorados.insere(explorado[1].estado):
             X.append(explorado)
@@ -184,14 +196,15 @@ def astar_manhattan(estado):
                 for i in range (len(caminho_inverso)):
                     nodo = caminho_inverso.pop()
                     caminho_certo.append(nodo.acao)
+                print(expandido)
                 return caminho_certo
             sucessores = expande(explorado[1])
             for sucessor in sucessores:
                 custo_biased  = soma_manhattan(sucessor.estado) + sucessor.custo
                 heappush(F,(custo_biased,sucessor))
-                
+    print(expandido)
     return None
-    
+
 
 def soma_manhattan(estado):
     matriz_estado = []
@@ -213,6 +226,7 @@ def soma_manhattan(estado):
                 soma_manhattan+= abs(pos[0] - i) + abs(pos[1] - j)
     return soma_manhattan
 
+
 def calcula_posicao_objetivo(peca):
     """
     Returns
@@ -229,3 +243,28 @@ def calcula_posicao_objetivo(peca):
     if numero_peca <=9:
         j  = numero_peca % 7
         return(2,j)
+
+
+estado = '2_3541687'
+
+print('bfs:')
+t0 = time.time()
+bfs(estado)
+print(time.time() - t0)
+
+print('dfs:')
+t1 = time.time()
+dfs(estado)
+print(time.time() - t1)
+
+print('manhattan:')
+t2 = time.time()
+astar_manhattan(estado)
+print(time.time() - t2)
+
+'''
+print('hamming:')
+t3 = time.time()
+astar_hamming(estado)
+print(time.time() - t3)
+'''
