@@ -27,7 +27,6 @@ def sucessor(estado):
     :param estado:
     :return:
     """
-
     transicoes = []
     j = 0
     for i in estado:
@@ -84,8 +83,27 @@ def bfs(estado):
     :param estado: str
     :return:
     """
-    # substituir a linha abaixo pelo seu codigo
-    raise NotImplementedError
+    objetivo = '12345678_'
+    raiz = Nodo(estado,None,None,0)
+    visitados = Tree()
+    fronteira = []
+    fronteira.append(raiz)
+    while (fronteira != []):
+        explorado = fronteira.pop(0)
+        if visitados.insere(explorado.estado):
+            if explorado.estado == objetivo: #Certo
+                nodo = explorado
+                caminho_inverso =[]
+                while nodo.pai != None:
+                    caminho_inverso.append(nodo.acao)
+                    nodo = nodo.pai
+                caminho_certo = []
+                for i in range (len(caminho_inverso)):
+                    caminho_certo.append(caminho_inverso.pop())
+                return caminho_certo
+            for sucessor in expande(explorado):
+                fronteira.append(sucessor)
+    return None
 
 
 def dfs(estado):
@@ -97,8 +115,27 @@ def dfs(estado):
     :param estado: str
     :return:
     """
-    # substituir a linha abaixo pelo seu codigo
-    raise NotImplementedError
+    objetivo = '12345678_'
+    raiz = Nodo(estado,None,None,0)
+    visitados = Tree()
+    fronteira = []
+    fronteira.append(raiz)
+    while (fronteira != []):
+        explorado = fronteira.pop()
+        if visitados.insere(explorado.estado):
+            if explorado.estado == objetivo:
+                nodo = explorado
+                caminho_inverso =[]
+                while nodo.pai != None:
+                    caminho_inverso.append(nodo.acao)
+                    nodo = nodo.pai
+                caminho_certo = []
+                for i in range (len(caminho_inverso)):
+                    caminho_certo.append(caminho_inverso.pop())
+                return caminho_certo
+            for sucessor in expande(explorado):
+                fronteira.append(sucessor)
+    return None
 
 
 def astar_hamming(estado):
@@ -132,7 +169,6 @@ def astar_manhattan(estado):
     custo_biased = soma_manhattan(raiz.estado) + raiz.custo
     heappush(F,(custo_biased,raiz))
     sucessores = expande(raiz)
-    count = 0
     estados_explorados = Tree()
     while F:        
         explorado=heappop(F)
@@ -193,7 +229,3 @@ def calcula_posicao_objetivo(peca):
     if numero_peca <=9:
         j  = numero_peca % 7
         return(2,j)
-
-
-
-
