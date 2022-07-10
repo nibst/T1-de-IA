@@ -1,4 +1,6 @@
 from  heapqModified import heappop,heappush
+import time
+from Tree import Tree
 class Nodo:
     """
     Implemente a classe Nodo com os atributos descritos na funcao init
@@ -25,6 +27,7 @@ def sucessor(estado):
     :param estado:
     :return:
     """
+
     transicoes = []
     j = 0
     for i in estado:
@@ -127,15 +130,14 @@ def astar_manhattan(estado):
     X = []
     F = []
     custo_biased = soma_manhattan(raiz.estado) + raiz.custo
-    lista_estados = []
     heappush(F,(custo_biased,raiz))
     sucessores = expande(raiz)
     count = 0
+    estados_explorados = Tree()
+    start = time.time()
     while F:        
         explorado=heappop(F)
-        
-        if explorado[1].estado not in lista_estados:
-            lista_estados.append(explorado[1].estado)
+        if estados_explorados.insere(explorado[1].estado):
             X.append(explorado)
             if explorado[1].estado == objetivo:
                 nodo = explorado[1]
@@ -146,11 +148,18 @@ def astar_manhattan(estado):
                 caminho_certo = []
                 for i in range (len(caminho_inverso)):
                     caminho_certo.append(caminho_inverso.pop())
+                end = time.time()
+                print(end-start)
                 return caminho_certo
             sucessores = expande(explorado[1])
             for sucessor in sucessores:
+                
                 custo_biased  = soma_manhattan(sucessor.estado) + sucessor.custo
+                
                 heappush(F,(custo_biased,sucessor))
+                
+    end = time.time()
+    print(end-start)
     return None
         
     """
