@@ -134,7 +134,6 @@ def astar_manhattan(estado):
     sucessores = expande(raiz)
     count = 0
     estados_explorados = Tree()
-    start = time.time()
     while F:        
         explorado=heappop(F)
         if estados_explorados.insere(explorado[1].estado):
@@ -147,42 +146,15 @@ def astar_manhattan(estado):
                     nodo = nodo.pai
                 caminho_certo = []
                 for i in range (len(caminho_inverso)):
-                    caminho_certo.append(caminho_inverso.pop())
-                end = time.time()
-                print(end-start)
+                    nodo = caminho_inverso.pop()
+                    caminho_certo.append(nodo.acao)
                 return caminho_certo
             sucessores = expande(explorado[1])
             for sucessor in sucessores:
-                
                 custo_biased  = soma_manhattan(sucessor.estado) + sucessor.custo
-                
                 heappush(F,(custo_biased,sucessor))
                 
-    end = time.time()
-    print(end-start)
     return None
-        
-    """
-    busca_grafo(s):
-
-    X ← {}
-
-    F ← {new Node(s)} 
-
-    loop:
-
-    se F = ∅: FALHA
-
-    v ← retira(F)
-
-    se v é o objetivo: retornar caminho s-v
-
-    se v ∉ X:
-
-        Insere v em X 
-
-        Cria Node pra cada vizinho de v e insere em F
-    """
     
 
 def soma_manhattan(estado):
