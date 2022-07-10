@@ -157,8 +157,40 @@ def astar_hamming(estado):
     :param estado: str
     :return:
     """
-    # substituir a linha abaixo pelo seu codigo
-    raise NotImplementedError
+    objetivo = '12345678_'
+
+    raiz = Nodo(estado, None, None, 0)
+
+    X = []
+    F = []
+    custo_biased = calcula_hamming(raiz.estado) + raiz.custo
+    heappush(F, (custo_biased, raiz))
+    sucessores = expande(raiz)
+    estados_explorados = Tree()
+    expandido = 0
+    while F:
+        expandido += 1
+        explorado = heappop(F)
+        if estados_explorados.insere(explorado[1].estado):
+            X.append(explorado)
+            if explorado[1].estado == objetivo:
+                nodo = explorado[1]
+                caminho_inverso = []
+                while nodo.pai != None:
+                    caminho_inverso.append(nodo)
+                    nodo = nodo.pai
+                caminho_certo = []
+                for i in range(len(caminho_inverso)):
+                    nodo = caminho_inverso.pop()
+                    caminho_certo.append(nodo.acao)
+                print(expandido)
+                return caminho_certo
+            sucessores = expande(explorado[1])
+            for sucessor in sucessores:
+                custo_biased = calcula_hamming(sucessor.estado) + sucessor.custo
+                heappush(F, (custo_biased, sucessor))
+    print(expandido)
+    return None
 
 
 def astar_manhattan(estado):
@@ -224,6 +256,7 @@ def soma_manhattan(estado):
             if matriz_estado[i][j] != '_':
                 pos = calcula_posicao_objetivo(matriz_estado[i][j])
                 soma_manhattan+= abs(pos[0] - i) + abs(pos[1] - j)
+
     return soma_manhattan
 
 
@@ -244,27 +277,39 @@ def calcula_posicao_objetivo(peca):
         j  = numero_peca % 7
         return(2,j)
 
+def calcula_hamming(estado):
+    hamming = 0
+    objetivo = '12345678_'
+
+    posicao = 0
+
+    for posicao in range(8):
+        if estado[posicao] != objetivo[posicao]:
+            hamming += 1
+
+    return hamming
+
 
 estado = '2_3541687'
 
-print('bfs:')
-t0 = time.time()
-bfs(estado)
-print(time.time() - t0)
 
-print('dfs:')
-t1 = time.time()
-dfs(estado)
-print(time.time() - t1)
+#print('bfs:')
+#t0 = time.time()
+#bfs(estado)
+#print(time.time() - t0)
 
-print('manhattan:')
-t2 = time.time()
-astar_manhattan(estado)
-print(time.time() - t2)
+#print('dfs:')
+#t1 = time.time()
+#dfs(estado)
+#print(time.time() - t1)
 
-'''
-print('hamming:')
-t3 = time.time()
-astar_hamming(estado)
-print(time.time() - t3)
-'''
+#print('manhattan:')
+#t2 = time.time()
+#astar_manhattan(estado)
+#print(time.time() - t2)
+
+
+#print('hamming:')
+#t3 = time.time()
+#astar_hamming(estado)
+#print(time.time() - t3)
