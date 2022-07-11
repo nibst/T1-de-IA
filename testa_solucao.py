@@ -1,7 +1,6 @@
 import unittest
 import solucao as solucao
 
-
 class TestaSolucao(unittest.TestCase):
     def test_sucessor(self):
         """
@@ -83,7 +82,7 @@ class TestaSolucao(unittest.TestCase):
         """
         # nao ha solucao a partir do estado 185423_67
         self.assertEqual(None, solucao.dfs("185423_67"))
-    
+
     def test_action_order(self):
         """
         Testa se BFS e A* retornam a sequencia de acoes na ordem correta
@@ -91,7 +90,7 @@ class TestaSolucao(unittest.TestCase):
         estado = "1235_6478"
         solucao_otima = ['esquerda', 'abaixo', 'direita', 'direita']
         self.assertEqual(solucao_otima, solucao.bfs(estado))
-        #self.assertEqual(solucao_otima, solucao.astar_hamming(estado))
+        self.assertEqual(solucao_otima, solucao.astar_hamming(estado))
         self.assertEqual(solucao_otima, solucao.astar_manhattan(estado))
 
 if __name__ == '__main__':
